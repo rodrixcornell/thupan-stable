@@ -96,4 +96,65 @@ class Request {
             return explode(',', self::$header('accept'));
         }
     }
+
+    /* Pega e trata as requisiçoes */
+    public static function data($request = [], &$data, $options = []) {
+        $config = [
+            'upper'  => false,
+            'lower'  => false,
+            'twig'   => false,
+            'secure' => true,
+        ];
+
+        // seta as configuracoes passadas
+        foreach($options as $opt_k => $opt_v) {
+            if(in_array($opt_k, array_keys($config))) {
+                $config[$opt_k] = $opt_v;
+            }
+        }
+
+        // transforma tudo em variavel
+        extract($config);
+
+        // não permite 2 tipos ao mesmo tempo.
+        if($upper && $lower) {
+            $upper = false;
+            $lower = false;
+        }
+
+        // trata os dados
+        foreach($request as $key => $value) {
+            if(empty($value)) {
+                continue;
+            }
+
+            if($upper) {
+                $value = strtoupper($value);
+            } else if($lower) {
+                $value = strtolower($value);
+            }
+
+            if($secure) {
+                $value = filter_var($value, FILTER_SANITIZE_MAGIC_QUOTES);
+            }
+
+            $data[$key] = $value;
+
+            if($twig) {
+                Response::assign($key, $value);
+            }
+        }
+    }
+
+    public static function any(&$data, $options = []) {
+        self::data($_REQUEST, $data, $options);
+    }
+
+    public static function post(&$data, $options = []) {
+        self::data($_POST, $data, $options);
+    }
+
+    public static function get(&$data, $options = []) {
+        self::data($_GET, $data, $options);
+    }
 }

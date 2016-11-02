@@ -4,6 +4,6 @@ use \Routing\Filter;
 
 Filter::add('model', function() {
 
-    echo 'filtro de model';
+    // verificacao dos models aqui
 
 });

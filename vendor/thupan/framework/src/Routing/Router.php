@@ -4,7 +4,7 @@ namespace Routing;
 
 use \Service\Http\Request;
 use \Service\Http\Response;
-use \Service\Redirect;
+use \Service\Http\Redirect;
 use \Routing\Filter;
 
 class Router {
@@ -26,6 +26,11 @@ class Router {
        ':hex'    => '[[:xdigit:]]+',
        ':uuidV4' => '\w{8}-\w{4}-\w{4}-\w{4}-\w{12}',
     ];
+
+    // adiciona uma exp. regular para validação
+    public static function setPattern($key, $regex) {
+        self::$patterns[$key] = $regex;
+    }
 
     public static function __callstatic($method, $params) {
         // adiciona o metodo passado estaticamente em um conjunto de array.
@@ -51,7 +56,7 @@ class Router {
         $method     = $segments[1];
 
         // habilita o controlador
-        $controller = "\\App\\Source\\Controllers\\" . $controller;
+        $controller = CONTROLLER_PREFIX . $controller;
         $controller = new $controller($message);
 
         // verifica se o método existe no controlador
@@ -183,6 +188,7 @@ class Router {
         }
     }
 
+    // disponibiliza todos os arquivos de rotas
     public static function getAll() {
         foreach(glob(PROJECT_DIR . 'app/Routers/router.*.php') as $file) {
             if($file = getFilePath($file)) {

@@ -4,6 +4,6 @@ use \Routing\Filter;
 
 Filter::add('auth', function() {
 
-    echo 'filtro de autenticacao';
+    // verificacao de autenticacao aqui
 
 });

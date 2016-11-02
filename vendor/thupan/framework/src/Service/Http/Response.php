@@ -12,7 +12,7 @@ class Response {
 
     }
 
-    public function error($number) {
+    public static function error($number) {
 
         switch($number) {
             case 404:
@@ -20,5 +20,13 @@ class Response {
             break;
         }
 
+    }
+
+    public static function redirect($url) {
+        header("Location: $url");
+    }
+
+    public static function assign($key, $value) {
+        
     }
 }

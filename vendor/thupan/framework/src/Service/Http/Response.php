@@ -2,6 +2,8 @@
 
 namespace Service\Http;
 
+use \Kernel\View;
+
 class Response {
 
     public function __construct() {
@@ -27,6 +29,6 @@ class Response {
     }
 
     public static function assign($key, $value) {
-        
+        View::assign($key, $value);
     }
 }

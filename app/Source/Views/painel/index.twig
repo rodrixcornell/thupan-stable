@@ -1,0 +1,16 @@
+{% extends "index.twig" %}
+{% block content %}
+
+{% if TX_NOME %}
+OLA {{TX_NOME}}
+{% endif %}
+
+<form action="http://localhost:8000/painel/index" method="post">
+
+    <input type="text" name="TX_NOME" />
+    <input type="submit" />
+
+</form>
+
+
+{% endblock %}
